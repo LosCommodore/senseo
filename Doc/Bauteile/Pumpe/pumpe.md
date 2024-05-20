@@ -8,3 +8,7 @@ Technical data:
 
 
 https://ulkapumps.com/collections/ulka-pump-hf-series/products/ulka-hf-230v
+
+# Berechnungen
+P = U^2 / R
+R = 230^2 / 22 = 2,4k
