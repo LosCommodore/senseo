@@ -8,6 +8,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 jupyter = "^1.0.0"
+tabula-py = {extras = ["jpype"], version = "^2.9.3"}
+pandas = "^2.2.2"
+matplotlib = "^3.9.0"
 
 
 [build-system]
