@@ -1,0 +1,48 @@
+component ntc_lookup
+% NTC-Resistor with Lookup-Table
+% Lookup Temperature-Resistor-Curve via a lookup table
+    
+nodes
+    H = foundation.thermal.thermal; % H:left
+    p = foundation.electrical.electrical; % +:left
+    n = foundation.electrical.electrical; % -:right
+end
+    
+parameters
+    C = {10,'J/K'};           % Heat Capacity
+end
+
+parameters (Size=variable)
+    res_t = {[293, 300], 'K'};
+    res_r = {[100, 110], 'Ohm'};
+end
+   
+variables(Access=protected)
+    i = { 0, 'A' };   % Current
+    Q = { 0, 'J/s' }; % Heat flow
+end
+
+variables
+    T = {value = {300, 'K'}, priority = priority.high}; % Temperature
+end
+
+branches
+  i : p.i -> n.i
+  Q : H.Q -> *
+end   
+
+equations   
+    assert(C>0)
+ 
+    T == H.T;
+    let
+        Rdem = tablelookup(res_t, res_r, T)
+        R = if Rdem > 0, Rdem else {0,'Ohm'} end;
+    in
+        R*i == p.v-n.v; % Electrical equation
+        T.der == (Q + R*i*i) / C; % Thermal equation
+    end
+    
+end
+
+end
